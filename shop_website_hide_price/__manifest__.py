@@ -7,7 +7,7 @@
     'description': """Hide public price in website shop
 """,
 
-    'author': "Denis Gonzalez",
+    'author': "Innscience.ca, Denis Gonzalez",
     'website': "http://innscience.ca",
     'category': 'Website',
     'version': '12.0.0.1',
