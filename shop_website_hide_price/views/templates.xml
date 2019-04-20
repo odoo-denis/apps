@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="product_add_to_cart_Custom" inherit_id="website_sale.product" name="Add To Quote - Logged In" customize_show="True">
+		<xpath expr="//a[@id='add_to_cart']" position="replace">
+			<a id="add_to_cart" class="btn btn-primary btn-lg mt8 js_check_product a-submit" href="#">Agregar a su cotizacion</a>
+        </xpath>
+    </template>
+    <template id="products_add_to_cart" inherit_id="website_sale.products_add_to_cart">
+      <xpath expr="//div[hasclass('product_price')]/t[1]" position="replace">
+      </xpath>
+    </template>	
+    <template id="product_price_replace" inherit_id="website_sale.product_price">
+        <xpath expr="//div" position="replace">
+            <div>
+		<p> Select qty </p>
+            </div>
+        </xpath>
+    </template>
+    <template id="header" inherit_id="website.layout" name="Header Shop My Cart Link">
+        <xpath expr="//header//ul[@id='top_menu']/li" position="replace">
+            <t t-set="website_sale_order" t-value="website.sale_get_order()" />
+            <li id="my_cart" t-att-class="'' if website_sale_order and website_sale_order.cart_quantity else 'hidden'">
+                <a href="/shop/cart">
+                    <i class="fa fa-shopping-cart"></i>
+                    your quotation <sup t-attf-class="my_cart_quantity label label-primary" t-esc="website_sale_order and website_sale_order.cart_quantity or ''" />
+                </a>
+            </li>
+        </xpath>
+    </template>
+	
+    <template id="remove_price" inherit_id="website_sale.products_item">
+        <xpath expr="//div[hasclass('product_price')]" position="replace">
+        </xpath>
+    </template>
+    <template id="cart_lines" inherit_id="website_sale.cart_lines">
+        <xpath expr="//table[@id='cart_products']/thead//tr" position="replace">
+            <tr>
+                <th class="td-img">Producto</th>
+                <th></th>
+                <th class="text-center td-qty">Cantidad</th>
+            </tr>
+		</xpath>		
+        <xpath expr="//table[@id='cart_products']/tbody//tr" position="replace">
+            <tr>
+                <td colspan="2" t-if="not line.product_id.product_tmpl_id" class='td-img'></td>
+                <td align="center" t-if="line.product_id.product_tmpl_id" class='td-img'>
+                    <span t-field="line.product_id.image_small" t-options="{'widget': 'image', 'class': 'img-rounded'}" />
+                </td>
+                <td t-if="line.product_id.product_tmpl_id" class='td-product_name'>
+                    <div>
+                        <a t-attf-href="/shop/product/#{ slug(line.product_id.product_tmpl_id) }">
+                           <strong t-esc="line.product_id.with_context(display_default_code=False).display_name" />
+                        </a>
+                    </div>
+                    <div class="text-muted hidden-xs small">
+                         <t t-foreach="line.name.splitlines()[1:]" t-as="name_line">
+                            <span><t t-esc="name_line"/></span><br/>
+                         </t>
+                    </div>
+                    <a href='#' class='js_delete_product hidden-xs no-decoration'> <small><i class='fa fa-trash-o'></i> Remove</small></a>
+                </td>
+                <td class="text-center td-qty">
+                    <div class="css_quantity input-group oe_website_spinner">
+                        <a t-attf-href="#" class="mb8 input-group-addon js_add_cart_json hidden-xs">
+                            <i class="fa fa-minus"></i>
+                        </a>
+                        <input type="text" class="js_quantity form-control quantity" t-att-data-line-id="line.id" t-att-data-product-id="line.product_id.id" t-att-value="int(line.product_uom_qty)" />
+                        <a t-attf-href="#" class="mb8 input-group-addon float_left js_add_cart_json hidden-xs">
+                            <i class="fa fa-plus"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        </xpath>
+    </template>
+
+    <template id="total" inherit_id="website_sale.total">
+	    <xpath expr="//div[@id='cart_total']" position="replace">
+		</xpath>
+    </template>
+    <template id="sort" inherit_id="website_sale.sort">
+	    <xpath expr="//t[@t-set='website_sale_sortable_current']" position="replace">
+            <t t-set="name_asc_label">Name - A to Z</t>
+            <t t-set="name_desc_label">Name - Z to A</t>
+            <t t-set="website_sale_sortable" t-value="[
+                (name_asc_label, 'name asc'),
+                (name_desc_label, 'name desc')
+            ]"/>
+            <t t-set="website_sale_sortable_current" t-value="[sort for sort in website_sale_sortable if sort[1]==request.params.get('order', '')]"/>
+        </xpath>
+    </template>
+
+    <template id="pricelist_list_custom" inherit_id="website_sale.pricelist_list">
+		<xpath expr="//t[@t-set='website_sale_pricelists']" position="replace">
+		</xpath>
+    </template>
+	
+    <template id="pricelist_list_custom" inherit_id="website_sale.pricelist_list">
+		<xpath expr="//t[@t-set='website_sale_pricelists']" position="replace">
+		</xpath>
+    </template>
+	
+
+</odoo>
+
+
