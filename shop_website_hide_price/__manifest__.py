@@ -9,7 +9,7 @@
 
     'author': "Denis Gonzalez",
     'website': "http://innscience.ca",
-    'category': 'E-commerce',
+    'category': 'Website',
     'version': '12.0.0.1',
     'installable': True,
     'license': 'LGPL-3',
